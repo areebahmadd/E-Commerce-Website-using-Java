@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import = "com.project.ConnectionProvider" %>
+   <%@page import = "java.sql.*" %>
+ 
+ <%
+ String name = request.getParameter("name");
+ String email = request.getParameter("email");
+ String password = request.getParameter("password");
+ String mobileNumber = request.getParameter("mobileNumber");
+ String securityQuestion = request.getParameter("securityQuestion");
+ String answer = request.getParameter("answer");
+ String msg = "";
+ 
+ try{
+	 Connection con = ConnectionProvider.getCon();
+	 PreparedStatement ps = con.prepareStatement("insert into admin(?,?,?,?,?) ");
+	 ps.setString(1, name);
+	 ps.setString(2, email);
+	 ps.setString(3, password);
+	 ps.setString(4, mobileNumber);
+	 ps.setString(5, securityQuestion);
+	 ps.setString(6, answer);
+	 
+	 ps.executeUpdate();
+	 
+	 request.setAttribute(msg, "Valid");
+	 RequestDispatcher dispatcher =  request.getRequestDispatcher("signup.jsp");
+	 dispatcher.forward(request, response);
+	 
+ }
+ catch(Exception e)
+ {
+	 request.setAttribute(msg, "Invalid");
+	 RequestDispatcher dispatcher =  request.getRequestDispatcher("signup.jsp");
+	 dispatcher.forward(request, response);
+	 //System.out.println(e.printStackTrace());
+ }
+ %>  
+ 
